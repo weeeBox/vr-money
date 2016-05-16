@@ -71,15 +71,18 @@ public class MoneyMaker : MonoBehaviour
         for (int size = maxSize; size > 0; --size)
         {
             float x = -(0.5f * (size - 1) * colliderSize.x + (size - 1) * m_gap);
-            float y = (maxSize - size + 0.5f) * colliderSize.y;
+            float y = (maxSize - size) * colliderSize.y;
             for (int i = 0; i < size; ++i)
             {
                 float z = -(0.5f * (size - 1) * colliderSize.z + (size - 1) * m_gap);
                 for (int j = 0; j < size; ++j)
                 {
+                    float rotation = (Random.Range(0.0f, 1.0f) < 0.5f ? 0 : 180) + Random.Range(-m_alpha, m_alpha);
+
                     GameObject bundle = Instantiate(m_prefabs.moneyBundle.gameObject) as GameObject;
-                    bundle.transform.position = new Vector3(x, y, z) + new Vector3(Random.Range(-m_offset, m_offset), 0, Random.Range(-m_offset, m_offset));
-                    bundle.transform.rotation = Quaternion.AngleAxis(Random.Range(-m_alpha, m_alpha), Vector3.up);
+                    bundle.transform.parent = gameObject.transform;
+                    bundle.transform.localPosition = new Vector3(x, y, z) + new Vector3(Random.Range(-m_offset, m_offset), 0, Random.Range(-m_offset, m_offset));
+                    bundle.transform.localRotation = Quaternion.AngleAxis(rotation, Vector3.up);
                     z += colliderSize.z + m_gap;
                 }
                 x += colliderSize.x + m_gap;
